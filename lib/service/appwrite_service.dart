@@ -1,33 +1,28 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:flutter/material.dart';
-import 'package:random_string/random_string.dart';
 
 class AppwriteService {
   late Client client;
+
   late Databases databases;
 
-  
-  static const endpoint = 'https://cloud.appwrite.io/v1'; 
-  static const projectId = '673567670010eafcd360';  
-  static const databaseId = '67356839002ee9fd577e'; 
-  static const collectionId = '6735687600059fa67114'; 
-  
-  
-  String documentId = randomAlphaNumeric(10); 
+  static const endpoint = 'https://cloud.appwrite.io/v1';
+  static const projectId = '673567670010eafcd360';
+  static const databaseId = '67356839002ee9fd577e';
+  static const collectionId = '6735687600059fa67114';
 
   AppwriteService() {
     client = Client();
-    client.setEndpoint(endpoint); 
-    client.setProject(projectId); 
+    client.setEndpoint(endpoint);
+    client.setProject(projectId);
     databases = Databases(client);
   }
 
   Future<List<Document>> getTasks() async {
     try {
       final result = await databases.listDocuments(
-        collectionId: collectionId, 
-        databaseId: databaseId, 
+        collectionId: collectionId,
+        databaseId: databaseId,
       );
       return result.documents;
     } catch (e) {
@@ -39,11 +34,13 @@ class AppwriteService {
  
   Future<Document> addTask(String title) async {
     try {
+      final documentId = ID.unique(); 
+
       final result = await databases.createDocument(
         collectionId: collectionId,
         databaseId: databaseId,
         data: {
-          'task': title, 
+          'task': title,
           'completed': false,
         },
         documentId: documentId,
@@ -55,11 +52,10 @@ class AppwriteService {
     }
   }
 
- 
   Future<Document> updateTaskStatus(String documentId, bool completed) async {
     try {
       final result = await databases.updateDocument(
-        collectionId: collectionId, 
+        collectionId: collectionId,
         documentId: documentId,
         data: {'completed': completed},
         databaseId: databaseId,
@@ -71,12 +67,11 @@ class AppwriteService {
     }
   }
 
-  
   Future<void> deleteTask(String documentId) async {
     try {
       await databases.deleteDocument(
         collectionId: collectionId,
-        documentId: documentId, 
+        documentId: documentId,
         databaseId: databaseId,
       );
     } catch (e) {

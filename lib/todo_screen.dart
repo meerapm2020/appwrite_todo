@@ -20,7 +20,6 @@ class _TodoScreenState extends State<TodoScreen> {
     _loadTasks();
   }
 
- 
   Future<void> _loadTasks() async {
     try {
       final tasks = await _appwriteService.getTasks();
@@ -32,7 +31,6 @@ class _TodoScreenState extends State<TodoScreen> {
     }
   }
 
- 
   Future<void> _addTask() async {
     final title = _controller.text;
     if (title.isNotEmpty) {
@@ -46,11 +44,10 @@ class _TodoScreenState extends State<TodoScreen> {
     }
   }
 
-  
   Future<void> _updateTaskStatus(Task task) async {
     try {
-      final updatedTask = await _appwriteService.updateTaskStatus(
-          task.id, !task.completed);
+      final updatedTask =
+          await _appwriteService.updateTaskStatus(task.id, !task.completed);
       setState(() {
         task.completed != updatedTask.data['completed'];
       });
@@ -58,7 +55,7 @@ class _TodoScreenState extends State<TodoScreen> {
       print('Error updating task: $e');
     }
   }
- 
+
   Future<void> _deleteTask(String taskId) async {
     try {
       await _appwriteService.deleteTask(taskId);
@@ -94,9 +91,8 @@ class _TodoScreenState extends State<TodoScreen> {
                   title: Text(
                     task.title,
                     style: TextStyle(
-                      decoration: task.completed
-                          ? TextDecoration.lineThrough
-                          : null,
+                      decoration:
+                          task.completed ? TextDecoration.lineThrough : null,
                     ),
                   ),
                   trailing: IconButton(
